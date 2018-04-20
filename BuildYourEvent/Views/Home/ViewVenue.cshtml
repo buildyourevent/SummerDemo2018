@@ -1,0 +1,108 @@
+﻿@using BuildYourEvent.Models;
+@model dynamic
+@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    @foreach (Photos photo in Model.venuePics)
+    {
+        <img src="@Url.Content(photo.url)" class="img-thumbnail" style="max-width:50%;height:400px">
+
+    }
+    <br />
+    <div id="calibriFont">
+        <table class="table">
+            <tr>
+                <td><h3>@Model.venue.name</h3></td>
+            </tr>
+            <tr>
+                <td>Guest Capacity:</td>
+                <td>Price Hourly:</td>
+                <td>Price Daily:</td>
+                <td>Venue Size:</td>
+            </tr>
+            <tr>
+                <td>@Model.venue.guest_capacity</td> 
+                <td>@Model.venue.price_hourly</td>
+                <td>@Model.venue.price_daily</td>
+                <td>@Model.venue.venue_size_sqf  Ft&sup2; </td>
+            </tr>
+        </table>
+        <table class="table">
+            <tr>
+                <td>Amenities:</td>
+                <td>Event Types:</td>
+                <td>Features:</td>
+                <td>On site services:</td>
+            </tr>
+            <tr>
+            <td>
+                <ul>
+                    @foreach (var item in Model.amenities)
+                    {
+                        <li>@item</li>
+                    }
+                </ul>
+            </td>
+            <td>
+                <ul>
+                    @foreach (var item in Model.eventTypes)
+                    {
+                        <li>@item</li>
+                    }
+                </ul>
+            </td>
+            <td>
+                <ul>
+                    @foreach (var item in Model.features)
+                    {
+                        <li>@item</li>
+                    }
+                </ul>
+            </td>
+            <td>
+                <ul>
+                    @foreach (var item in Model.onSiteServices)
+                    {
+                        <li>@item</li>
+                    }
+                </ul>
+            </td>
+          </tr>
+        </table>
+        <table class="table">
+            <tr>
+                <td>Styles:</td>
+                <td>Venue Rules:</td>
+                <td>Venue Types:</td>
+            </tr>
+            <tr>
+                <td>
+            <ul>
+                @foreach (var item in Model.styles)
+                {
+                    <li>@item</li>
+                }
+            </ul>
+            </td>
+            <td>
+                <ul>
+                    @foreach (var item in Model.venueRules)
+                    {
+                        <li>@item</li>
+                    }
+                </ul>
+            </td>
+            <td>
+                <ul>
+                    @foreach (var item in Model.venueTypes)
+                    {
+                        <li>@item</li>
+                    }
+                </ul>
+            </td>
+             </tr>
+        </table>
+    </div>
+</div>

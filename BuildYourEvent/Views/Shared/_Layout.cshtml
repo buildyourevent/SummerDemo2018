@@ -1,0 +1,136 @@
+﻿@using Microsoft.AspNetCore.Http;
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="~/JS/BYE_script.js"></script>
+    <link rel="stylesheet" href="~/CSS/StyleSheet.css" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+</head>
+
+<body id="bg-col">
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top" id="head-foot-col">
+        <a class="navbar-brand" href="/"><img src="~/Images/1.png" height="50" width="200"> </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav mr-auto"></ul>
+            <ul class="nav navbar-nav navbar-right" id="calibriFont">
+                <li><a href="@Url.Action("ComingSoon","Home")" class="nav-link"> What we do</a></li>
+                @if (Context.Session.GetInt32("vendorId") != null)
+                {
+                    //<li><a href="#" class="nav-link">uid:@Context.Session.GetInt32("userId") </a></li>
+                    //<li><a href="#" class="nav-link">vid:@Context.Session.GetInt32("vendorId") </a></li>
+                    //<li>@Context.Session.GetString("firstName") </li>
+                    <li><a href="@Url.Action("RegisterVenue", "Home")" class="nav-link">Add your venue</a></li>
+                    <li><a class="nav-link" asp-controller="Home" asp-action="Logout">Logout</a></li>
+
+                }
+                else if (Context.Session.GetInt32("userId") != null)
+                {
+                    <li><a class="nav-link" asp-controller="Home" asp-action="Logout">Logout</a></li>
+                }
+                else
+                {
+                <li><a href="#" class="nav-link" data-toggle="modal" data-target="#myModal">Login</a></li>
+                }
+            </ul>
+        </div>
+    </nav>
+    <br />
+    <br />
+    <br />
+    <br />
+    <!-- Button trigger modal -->
+    <!-- The Modal (contains the Sign Up form) -->
+    <div class="modal center fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form asp-controller="Home" asp-action="Login">
+                    <div class="container">
+                        <label for="uname"><b>Username</b></label>
+                        <input type="text" class="form-control" placeholder="Enter Username" name="userName" required>
+                        <br />
+                        <label for="psw"><b>Password</b></label>
+                        <input type="password" class="form-control" placeholder="Enter Password" name="password" required>
+                        <br />
+                        <button type="submit" id="buttonLogin">Login</button>
+                        <br />
+                        <label>
+                            <input type="checkbox" checked="checked" name="remember"> Remember me
+                        </label>
+                    </div>
+                    <div class="container" style="background-color:floralwhite">
+                        <span>Not a <a href="@Url.Action("Register", "Home")">user?</a></span>
+                    </div>
+                </form>
+            </div>
+        </div>
+        </div>
+        <div class="container-fluid">
+            @RenderBody()
+        </div>
+        <br />
+
+</body>
+
+</html>
+<footer class="footer navbar-fixed-bottom" id="footerFont">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <p>Build Your Event</p>
+                <ul class="navbar-nav mr-auto">
+                    <li><a class="nav-link" href="@Url.Action("ComingSoon","Home")">About us</a></li>
+                    <li><a class="nav-link" href="@Url.Action("ComingSoon","Home")">Careers</a></li>
+                    <li><a class="nav-link" href="@Url.Action("ComingSoon","Home")">Contact</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3">
+                <p>List your venue</p>
+                <ul class="navbar-nav mr-auto">
+                    <li><a class="nav-link" href="@Url.Action("ComingSoon","Home")">How it works</a></li>
+                    <li><a class="nav-link" href="@Url.Action("ComingSoon","Home")">Sign up free</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3">
+                <p>Support</p>
+                <ul class="navbar-nav mr-auto">
+                    <li><a class="nav-link" href="@Url.Action("ComingSoon","Home")">Cancellations</a></li>
+                    <li><a class="nav-link" href="@Url.Action("ComingSoon","Home")">Liability & insurance</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3">
+                <p>Legal</p>
+                <ul class="navbar-nav mr-auto">
+                    <li><a class="nav-link" href="@Url.Action("ComingSoon","Home")">Terms</a></li>
+                    <li><a class="nav-link" href="@Url.Action("ComingSoon","Home")">Privacy</a></li>
+                </ul>
+            </div>
+        </div>
+        <p style="text-align:center;">Copyright 2018 (c) Build Your Event | Built in Ottawa</p>
+    </div>
+
+</footer>
+<script>
+// Get the modal
+var modal = document.getElementById('id01');
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+</script>

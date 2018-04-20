@@ -1,0 +1,230 @@
+﻿@using BuildYourEvent.Models;
+@model dynamic
+@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+<div class="container-fluid" id="resultPage">
+    <div class="row">
+
+        <div class="col-md-7">
+            <div class="container">
+                <form asp-controller="Home" asp-action="Results" enctype="multipart/form-data">
+                    <div class="form-row" style="text-align:center;font-size:1.2em;">
+                        <div class="col-md-3">
+                            <span>Venue Styles</span>
+                            <input type="hidden" id="fromResults" name="fromResults" value="y"/>
+                            <select class="form-control custom-select" name="venueStyle" id="vStyles">
+                                <option>None</option>
+                                @foreach (Styles style in Model.VenueStyles)
+                                {
+                                    <option>@style.name</option>
+
+                                }
+                            </select>
+                            <span>Venue Type</span>
+                            <select class="form-control custom-select" name="venueType" id="vTypes">
+                                <option>None</option>
+                                @foreach (Venue_Types type in Model.VenueTypes)
+                                {
+                                    <option>@type.name</option>
+
+                                }
+                            </select>
+                            <span>Event Date</span>
+                            <input name="date" class="form-control" id="date" placeholder="Event Date" type="Date" />
+                        </div>
+                        <div class="col-md-6">
+                            <br />
+                            <span>Price per day</span>
+                            <br />
+                            <input class="form-control" type="text" name="price-daily" id="amount-daily" readonly" />
+                            <div class="form-control" id="slider-range-min-daily"></div>
+
+                            <br />
+                            <span>Price per hour</span>
+                            <br />
+                            <input class="form-control" type="text" name="price-hourly" id="amount-hourly" readonly" />
+                            <div class="form-control" id="slider-range-min-hourly"></div>
+                        </div>
+                        <div class="col-md-3">
+                            <span>Guests</span>
+                            <input class="form-control input-md" type="number" name="guests" id="guests" />
+                            <br />
+                            <button class="btn btn-success" type="submit">Apply Filters</button>
+                            <a href="#" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal2">
+                                More Filters
+                            </a>
+                        </div>
+                    </div>
+                </form>
+
+
+                <br />
+                <div class="container" id="filters"></div>
+                <div class="container-fluid">
+                    <div class="card-deck">
+                        <div class="row" >
+
+
+                            @if (Model.Venues != null)
+                            {
+                                @foreach (Venues venues in Model.Venues)
+                                {
+
+                                    @foreach (Photos photo in Model.Photos)
+                                    {
+                                        if (photo.fk_Venue == venues.id)
+                                        {
+                                            <div class="col-md-6"style="padding-bottom:10px;">
+                                                <div class="card" style="width: 22rem;color:black;">
+                                                    <img src="@Url.Content(photo.url)" class="img-thumbnail" style="width:22rem;height: 15rem;">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">@venues.name</h5>
+                                                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                                        <ul class="list-group list-group-flush">
+                                                            <li class="list-group-item">Price Daily: @venues.price_daily</li>
+                                                            <li class="list-group-item">Guest Capacity: @venues.guest_capacity</li>
+                                                        </ul>
+                                                        <a asp-controller="Home" asp-action="ViewVenue" asp-route-id="@venues.id" class="btn btn-primary">View</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                          
+                                        }
+
+
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                <br />
+                                <br />
+                                <p>There are no venues currently for this venue type.</p>
+                            }
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-5">
+            <div class="float-right" id="googleMap" style="width:100%;height:600px; position:fixed;"></div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal right fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel2">More Filters</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+            </div>
+
+            <div class="modal-body">
+                <div class="container">
+                    <form asp-controller="Home" asp-action="Results" enctype="multipart/form-data">
+                        <input type="hidden" id="fromResults" name="fromResults" value="y" />
+                        <input type="hidden" id="price-daily" name="price-daily"/>
+                        <input type="hidden" id="price-hourly" name="price-hourly" />
+                        <input type="hidden" id="numGuests" name="numGuests"/>
+                        <input type="hidden" id="style" name="style"/>
+                        <input type="hidden" id="type" name="type" />
+                        <input type="hidden" id="event_date" name="event_date"/>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <h4>Amenities</h4>
+                                @foreach (Amenities a in Model.Amenities)
+                                {
+                                    
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" name="amenities" type="checkbox" id="@a.name" value="@a.id" />
+                                        <label class="form-check-label" for="@a.name">@a.name</label>
+                                    </div>
+
+                                }
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <h4>Event Type</h4>
+                                @foreach (Event_Types e in Model.EventTypes)
+                                {
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" name="eventTypes" type="checkbox" id="@e.name" value="@e.id" />
+                                        <label class="form-check-label" for="@e.name">@e.name</label>
+                                    </div>
+
+                                }
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <h4>Features</h4>
+                                @foreach (Features f in Model.Features)
+                                {
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" name="features" type="checkbox" id="@f.name" value="@f.id" />
+                                        <label class="form-check-label" for="@f.name">@f.name</label>
+                                    </div>
+
+                                }
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <h4>On-Site Services</h4>
+                                @foreach (On_Site_Services o in Model.OnSiteServices)
+                                {
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" name="onSiteServices" type="checkbox" id="@o.name" value="@o.id" />
+                                        <label class="form-check-label" for="@o.name">@o.name</label>
+                                    </div>
+
+                                }
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <h4>Venue Rules</h4>
+                                @foreach (Venue_Rules r in Model.VenueRules)
+                                {
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" name="venueRules" type="checkbox" id="@r.name" value="@r.id" />
+                                        <label class="form-check-label" for="@r.name">@r.name</label>
+                                    </div>
+
+                                }
+                            </div>
+                        </div>
+                        <button id ="submitFilters" class="btn btn-primary">Select new filters</button>
+                    </form>
+
+                </div>
+            </div><!--modal body-->
+        </div><!-- modal-content -->
+    </div><!-- modal-dialog -->
+
+</div><!-- modal -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCDVghUsejUCZxuCLkGjcwb6usIOJivbnI&callback=initMap"></script>
+<script type="text/javascript">
+    $("#submitFilters").click(function () {    
+
+        $('#price-daily').val($('#amount-daily').val());
+        $('#price-hourly').val($('#amount-hourly').val());
+        $('#numGuests').val($('#guests').val());
+        $('#style').val($('#vStyles').val());
+        $('#type').val($('#vTypes').val());
+        $('#event_date').val($('#date').val());
+
+
+    });
+
+</script>
