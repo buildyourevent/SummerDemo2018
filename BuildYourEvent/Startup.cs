@@ -18,8 +18,9 @@ namespace BuildYourEvent
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var connection = @"Server = mssql5.gear.host;Database=byedb1;Uid=XXXX;Pwd=XXXXX";
-                //@"Server=localhost\SQLEXPRESS;Database=ByeDB;Trusted_Connection=True;MultipleActiveResultSets=true";
+            var connection = @"Server = mssql5.gear.host;Database=byedb1;Uid=XXXXXXX;Pwd=XXXXXXXX;Connection Timeout=30;MultipleActiveResultSets=True";
+
+            //@"Server=localhost\SQLEXPRESS;Database=ByeDB;Trusted_Connection=True;MultipleActiveResultSets=true";
 
             services.AddDbContext<VenuesDataContext>(options => options.UseSqlServer(connection));
             services.AddMvc();

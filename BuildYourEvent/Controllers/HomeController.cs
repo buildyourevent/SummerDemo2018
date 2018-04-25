@@ -20,6 +20,7 @@ using BuildYourEvent.Models;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 
 namespace BuildYourEvent.Controllers
 {
@@ -34,11 +35,15 @@ namespace BuildYourEvent.Controllers
         private VenuesDataContext _context; //used for entity 
         private IHostingEnvironment _hostingEnvironment; // used for file storage
 
+        
+
         //Contructor of HomeController
         public HomeController(VenuesDataContext context, IHostingEnvironment environment)
         {
             _context = context;
             _hostingEnvironment = environment;
+
+            
         }
 
 
@@ -84,7 +89,6 @@ namespace BuildYourEvent.Controllers
         {
             String fromResults = Request.Form["fromResults"];
             dynamic model = new ExpandoObject();
-
 
             if (fromResults.Equals("n"))
             {
